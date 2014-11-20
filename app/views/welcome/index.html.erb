@@ -1,2 +1,9 @@
-<h1>Welcome#index</h1>
-<p>Find me in app/views/welcome/index.html.erb</p>
+  <%= form_for User.new do |f| %><br>
+    Your email: <%= f.text_field :email %><br>
+    <%= f.label :email %><br>
+  
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+
+<% end %>
