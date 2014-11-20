@@ -4,20 +4,24 @@ require 'pry'
 require 'date'
 # uri.to_s equivalent to uri.scheme+uri.host+uri.path+uri.query+uri.fragment#total query
 #scheme: http, #host: api.stackexchange.com, #path: /2.2/questions, #query: page=1&pagesize=1&order=desc&sort=activity&site=stackoverflow&filter=%219YdnSNNB1, #fragment: nil
-SOAPIpath="questions"#could be: answers, comments, tags, badges, users, events, info, posts, privileges, etc. ##https://api.stackexchange.com/docs
+SOAPIpath="questions/no-answers"
+#could be: answers, comments, tags, badges, users, events, info, posts, privileges, etc. ##https://api.stackexchange.com/docs
 todays_date=DateTime.now
 last_week=todays_date -7 # you can add and subtract days like this
 last_month=todays_date<<1 ##use << for month back, and >> for month forward: don't add days becuase the month before or after could be different form just 30 days apart
 # Time.new.to_i #1416453727 nanoseconds since the Unix epoch
 ##using one month ago to today
-from_date=last_month.to_time.to_i #convert from DateTime, to Time, and then to integer nanoseconds from the epoch for use in the api
+from_date=last_week.to_time.to_i #convert from DateTime, to Time, and then to integer nanoseconds from the epoch for use in the api
 to_date=todays_date.to_time.to_i
 host_path={host: "api.stackexchange.com", path: "/2.2/#{SOAPIpath}"}
-query_params={key: "1iawbhuf9MxT2X77q)tvUA((", page: 1, pagesize: 5, order: "desc", sort: "activity", fromdate: "#{from_date}", todate: "#{to_date}", site: "stackoverflow", filter: "!9YdnSNNB1"}#this filter shows the total number of results in the hash
+query_params={key: "1iawbhuf9MxT2X77q)tvUA((", page: 1, pagesize: 100, order: "desc", sort: "activity", fromdate: "#{from_date}", todate: "#{to_date}", tagged: "ruby", site: "stackoverflow", filter: "!-*f(6rwhz2k1"}#this filter shows the total number of results in the hash
+
+
 uri=URI::HTTP.build(host_path)
 uri.query=URI.encode_www_form(query_params)
 response=Net::HTTP.get(URI(uri.to_s))
 data= JSON.parse(response)
+binding.pry
 
 
 user_requested_tags=["ruby", "html", "css", "javascript", "sql", "ruby-on-rails", "activerecord", "jQuery", "regex", "scrape"]
@@ -32,7 +36,6 @@ def collect_questions_with_tags(data)
     puts item
   end
 end
-binding.pry
 
 # syntax 
 # parameter-passing
