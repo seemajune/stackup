@@ -9,9 +9,9 @@
       Hello! Here is an unanswered Ruby question that was recently posted to  Stack Overflow: <br>
     </p>
     <p>
-      Question Title: <%= @question.title %>.
+      Question Title: <%= @question.title.html_safe %>.
     </p>
-    <p>Question Body: <%= @question.body_html %></p>
+    <p>Question Body: <%= @question.body_html.html_safe %></p>
 <p>Answer the question <%= @question.url %></p>
   </body>
 </html>
